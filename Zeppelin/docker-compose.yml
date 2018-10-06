@@ -1,0 +1,19 @@
+zeppelin:
+  image: dylanmei/zeppelin
+  container_name: zeppelin
+  environment:
+    ZEPPELIN_PORT: 8080
+    ZEPPELIN_JAVA_OPTS: >-
+      -Dspark.driver.memory=1g
+      -Dspark.executor.memory=2g
+    SPARK_SUBMIT_OPTIONS: >-
+      --conf spark.driver.host=localhost
+      --conf spark.driver.port=8081
+      --conf spark.es.port=9200
+    MASTER: local[*]
+  ports:
+    - 8080:8080
+    - 8081:8081
+    - 4040:4040
+  volumes:
+    - ./znotebooks:/usr/zeppelin/notebook
