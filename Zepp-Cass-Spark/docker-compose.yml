@@ -71,3 +71,13 @@ zeppelin:
     
   volumes:
     - ./znotebooks:/usr/zeppelin/notebook
+    
+phpwebserver:
+    image: myphpcass
+    container_name: phpwebserver
+    ports:
+        - 8070:80
+    links:
+        - node01:cassandra
+    volumes:
+        - /home/minhnln/vboxshare/Zepp-Cass-Spark/shared-data/public_html:/var/www/html

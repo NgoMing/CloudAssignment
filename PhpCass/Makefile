@@ -1,0 +1,1 @@
+docker run -d --name phpcass -e SSH_PASSWORD=password uq/phpcass
