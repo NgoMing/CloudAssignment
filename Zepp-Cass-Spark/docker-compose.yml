@@ -8,7 +8,7 @@ node01:
         - "9160:9160"
         - "7199:7199"
     volumes:
-        - ./data1:/var/lib/cassandra
+        - /home/minhnln/vboxshare/Zepp-Cass-Spark/shared-data/Cass1:/shared-data
    
 node02:
     image: cassandra:3.11.1
@@ -20,23 +20,7 @@ node02:
         - "19160:9160"
         - "17199:7199"
     volumes:
-        - ./data2:/var/lib/cassandra
-    environment:
-        - CASSANDRA_SEEDS=node01
-    links:
-        - node01:node01
-
-node03:
-    image: cassandra:3.11.1
-    container_name: cass_node3
-    ports:
-        - "27000:7000"
-        - "27001:7001"
-        - "29042:9042"
-        - "29160:9160"
-        - "27199:7199"
-    volumes:
-        - ./data3:/var/lib/cassandra
+        - /home/minhnln/vboxshare/Zepp-Cass-Spark/shared-data/Cass2:/shared-data
     environment:
         - CASSANDRA_SEEDS=node01
     links:
@@ -49,28 +33,21 @@ spark-master:
         - SPARK_TYPE=master
     ports:
         - 8080:8080
+        - 4040:4040
         
 spark-worker-1:
     image: uq/spark
     container_name: spark-worker-1
     environment:
-      - SPARK_TYPE=slave
-      - SPARK_MASTERS=spark-master
-      - SPARK_WORKER_CORES=2
-      - SPARK_WORKER_MEMORY=2g
+        - SPARK_TYPE=slave
+        - SPARK_MASTERS=spark-master
+        - SPARK_WORKER_CORES=48
+        - SPARK_WORKER_MEMORY=2g
     links:
-      - spark-master
-  
-spark-worker-2:
-    image: uq/spark
-    container_name: spark-worker-2
-    environment:
-      - SPARK_TYPE=slave
-      - SPARK_MASTERS=spark-master
-      - SPARK_WORKER_CORES=2
-      - SPARK_WORKER_MEMORY=2g
-    links:
-      - spark-master
+        - spark-master
+        - zeppelin
+    ports:
+        - 8081:8081
 
 zeppelin:
   build: .
@@ -81,9 +58,6 @@ zeppelin:
       -Dspark.driver.memory=1g
       -Dspark.executor.memory=2g
     SPARK_SUBMIT_OPTIONS: >-
-      --conf spark.driver.host=localhost
-      --conf spark.driver.port=8081
-      --conf spark.es.port=9200
       --packages datastax:spark-cassandra-connector:2.0.0-M2-s_2.11
       --conf spark.cassandra.connection.host=cassandra
       --conf cassandra.hosts=cassandra
@@ -94,5 +68,6 @@ zeppelin:
   ports:
     - 8090:8090
     - 8091:8091
+    
   volumes:
     - ./znotebooks:/usr/zeppelin/notebook
