@@ -33,38 +33,56 @@
 ### System requirements
 * Window Os
 * Docker Toolbox
-`https://docs.docker.com/toolbox/toolbox_install_windows/`
+```
+https://docs.docker.com/toolbox/toolbox_install_windows/
+```
 
 ### Docker Machine requirement
 * 4 cores cpu, 4GB RAM, 40GB storage
 * If cloud-dev exist
-`docker-machine start cloud-dev`
+```
+docker-machine start cloud-dev
+```
 * If cloud-dev not exist, create new docker machine:
-`docker-machine create --driver virtualbox --virtualbox-cpu-count=4 --virtualbox-memory=4096 --virtualbox-disk-size=40000 cloud-dev`
+```
+docker-machine create --driver virtualbox --virtualbox-cpu-count=4 --virtualbox-memory=4096 --virtualbox-disk-size=40000 cloud-dev
+```
 * Update the environment:
-`eval $(docker-machine env cloud-dev)`
+```
+eval $(docker-machine env cloud-dev)
+```
 * Stop default machine if needed
-`docker-machine stop default`
+```
+docker-machine stop default
+```
 
 ### Mount local volumes in docker machine 
 * Guide link:
-`links: https://stackoverflow.com/questions/30040708/how-to-mount-local-volumes-in-docker-machine`
+```
+links: https://stackoverflow.com/questions/30040708/how-to-mount-local-volumes-in-docker-machine
+```
 
 * Commands
-`cd mnt/sda1/var/lib/boot2docker`
-`sudo vi bootlocal.sh`
+```
+cd mnt/sda1/var/lib/boot2docker
+sudo vi bootlocal.sh
 
-`sudo mkdir -p /home/minhnln/vboxshare`
-`sudo mount -t vboxsf -o defaults,uid=`id -u docker`,gid=`id -g docker` CloudAssignment /home/minhnln/vboxshare`
+sudo mkdir -p /home/minhnln/vboxshare
+sudo mount -t vboxsf -o defaults,uid=`id -u docker`,gid=`id -g docker` CloudAssignment /home/minhnln/vboxshare
+```
 
 ### Build
 
 ##### Step 1: Clone git repository
-`git clone `
-`cd`
+```
+git clone 
+cd
+```
 
 ##### Step 2: Run containers under background
-`docker-compose up -d`
+```
+docker-compose up -d
+```
 
 ##### Step 3: Configure connection between Zeppelin and Cassandra as well as Spark
 - Access address: http://192.168.99.100:8080 to get URL of spart-master container
@@ -75,11 +93,19 @@
 
 # Step 4: Import database into Cassandra node
 - Enter Cassandra node1 in bash mode:
-`docker exec -it  cass_node1 bash`
+```
+docker exec -it  cass_node1 bash
+```
 - Import key space and tables via cql file
-`cqlsh -f '/shared-data/cass_db.cql`
+```
+cqlsh -f '/shared-data/cass_db.cql
+```
 - Test data in tables
-`cqlsh -e 'use cass_db; select * from sales_order;`
+```
+cqlsh -e 'use cass_db; select * from sales_order;
+```
 
 # Step 5: Stop and remove all containers
-`docker-compose down`
+```
+docker-compose down
+```
