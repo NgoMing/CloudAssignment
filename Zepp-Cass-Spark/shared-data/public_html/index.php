@@ -11,19 +11,19 @@
     <body>
         <h1>
             <?php
-                echo "sensor records of St Lucia\n";
+                echo "Sales order information\n";
             ?>
         </h1>
 
         <?php
             $cluster = Cassandra::cluster()
-                ->withContactPoints('Cassandra') // cassandra address 
+                ->withContactPoints('cassandra') // cassandra address 
                 ->withPort(9042)
                 ->build();
-            $keyspace = 'cloudcomputing'; // keyspace
+            $keyspace = 'cass_db'; // keyspace
             $session = $cluster->connect($keyspace);
             $statement = new Cassandra\SimpleStatement(
-                "SELECT * FROM data WHERE campus = 'St Lucia'" // cql sentence
+                "SELECT * FROM sales_order WHERE student_name = 'Ruben Torres'" // cql sentence
             );
             $future = $session->executeAsync($statement); // fully asynchronous and easy parallel execution
             $result = $future->get(); // wait for the result, with an optional timeout
