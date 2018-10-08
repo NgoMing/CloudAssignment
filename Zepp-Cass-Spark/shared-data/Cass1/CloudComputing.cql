@@ -1,10 +1,10 @@
-CREATE KEYSPACE cloudcomputing
+CREATE KEYSPACE cloud
 WITH REPLICATION = {
 'class' : 'NetworkTopologyStrategy',
 'datacenter1' : 2
 } ;
 
-use cloudcomputing ;
+use cloud ;
 
 CREATE TABLE data (
 campus text,

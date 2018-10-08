@@ -35,14 +35,23 @@ mkdir -p <local_dir>
 mount -t vboxsf -o defaults,uid=`id -u docker`,gid=`id -g docker` <mount_name> <local_dir>
 ```
 
-# Run containers under background
-docker-compose up -d
+# Step 1: Run containers under background
+`docker-compose up -d`
 
-# Access address: http://192.168.99.100:8080 to get URL of spart-master container
-# 192.168.99.100 is machine-host-ip which can get by the following command:
-docker-machine inspect '{{.NetworkSettings.IPAddress}}'
+# Step 2: Configure connection between Zeppelin and Cassandra as well as Spark
+- Access address: http://192.168.99.100:8080 to get URL of spart-master container
+- Access Zeppelin via address: http://192.168.99.100:8090
+- Click on anonymous at the top right, then Interpreter
+- Go to Cassandra and edit the `cassandra.hosts` field to `cassandra`
+- Go to Spark part and edit the `master` field to the value of the above spark-master URL such as `spark://e7583f98220e:7077`
 
-# Access Zeppelin via address: http://192.168.99.100:8090
-# Click on anonymous at the top right, then Interpreter
-# Go to Spark part and edit the master field to the value of the above spark-master ip
+# Step 4: Import database into Cassandra node
+- Enter Cassandra node1 in bash mode:
+`docker exec -it  cass_node1 bash`
+- Import key space and tables via cql file
+`cqlsh -f '/shared-data/CloudComputing.cql`
+- Test data in tables
+`cqlsh -e 'use cloudcomputing; select * from data;`
 
+# Step 3: Stop and remove all containers
+`docker-compose down`
