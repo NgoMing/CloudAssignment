@@ -32,20 +32,17 @@
 
 ### System requirements
 * Window Os
-* Docker Toolbox
-```
-https://docs.docker.com/toolbox/toolbox_install_windows/
-```
+* Docker Toolbox: https://docs.docker.com/toolbox/toolbox_install_windows/
 
 ### Docker Machine requirement
-* 4 cores cpu, 4GB RAM, 40GB storage
+* 4 cores cpu, 6GB RAM, 40GB storage
 * If cloud-dev exist
 ```
 docker-machine start cloud-dev
 ```
 * If cloud-dev not exist, create new docker machine:
 ```
-docker-machine create --driver virtualbox --virtualbox-cpu-count=4 --virtualbox-memory=4096 --virtualbox-disk-size=40000 cloud-dev
+docker-machine create --driver virtualbox --virtualbox-cpu-count=4 --virtualbox-memory=6144 --virtualbox-disk-size=50000 cloud-dev
 ```
 * Update the environment:
 ```
@@ -57,11 +54,7 @@ docker-machine stop default
 ```
 
 ### Mount local volumes in docker machine 
-* Guide link:
-```
-links: https://stackoverflow.com/questions/30040708/how-to-mount-local-volumes-in-docker-machine
-```
-
+* Guide link: https://stackoverflow.com/questions/30040708/how-to-mount-local-volumes-in-docker-machine
 * Commands
 ```
 cd mnt/sda1/var/lib/boot2docker
@@ -85,8 +78,12 @@ docker-compose up -d
 ```
 
 ##### Step 3: Configure connection between Zeppelin and Cassandra as well as Spark
-- Access address: http://192.168.99.100:8080 to get URL of spart-master container
-- Access Zeppelin via address: http://192.168.99.100:8090
+- Get docker machine ip
+```
+docker-machine ip cloud-dev
+```
+- Access address: http://docker-machine-ip:8080 to get URL of spart-master container
+- Access Zeppelin via address: http://docker-machine-ip:8090
 - Click on anonymous at the top right, then Interpreter
 - Go to Cassandra and edit the `cassandra.hosts` field to `cassandra`
 - Go to Spark part and edit the `master` field to the value of the above spark-master URL such as `spark://e7583f98220e:7077`
