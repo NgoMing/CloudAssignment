@@ -6,7 +6,7 @@
 
 <html>
     <head>
-        <title>Bootstrap Website Example</title>
+        <title>Educational Programming</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -21,8 +21,7 @@
     </head>
     <body>
         <div class="jumbotron text-center" style="margin-bottom:0">
-          <h1>My First Bootstrap Page</h1>
-          <p>Resize this responsive page to see the effect!</p> 
+          <h1>Educational Programming</h1>
         </div>
 
         <nav class="navbar navbar-inverse">
@@ -33,13 +32,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>                        
               </button>
-              <a class="navbar-brand" href="#">WebSiteName</a>
+              <a class="navbar-brand" href="#">Studying</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
               <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Sign up</a></li>
               </ul>
             </div>
           </div>
@@ -56,12 +55,12 @@
 
             // Write a row to database
             $statement = $session->execute(new Cassandra\SimpleStatement(
-                "insert into sales_order (student_name, course_name, date, course_price)
-                    values ('minhnln', 'Java Programming', '2018-10-07 00:00:00', 123.00)"));
+                "insert into sales_join_price (student_name,course_name,date,rate,price) 
+                values ('Minhnln','C Programming','2018-03-22',2,126.89);"));
 
             // Read datas from database
             $statement = new Cassandra\SimpleStatement(
-                "SELECT * FROM sales_order WHERE student_name = 'minhnln'" // cql sentence
+                "SELECT * FROM sales_join_price WHERE student_name = 'Minhnln'" // cql sentence
             );
             $future = $session->executeAsync($statement); // fully asynchronous and easy parallel execution
             $result = $future->get(); // wait for the result, with an optional timeout
@@ -76,13 +75,6 @@
         <div class="container">
           <div class="row">
             <div class="col-sm-8">
-            <?php
-                echo "<table>";
-                foreach ($result as $row) { // results and rows implement Iterator, Countable and ArrayAccess
-                        echo "<tr><td>" . implode("|",$row)  .  "</td></tr>";
-                }
-                echo "</table>";
-            ?>
               <h2>About Me</h2>
               <h5>Photo of me:</h5>
               <div class="fakeimg">Fake Image</div>

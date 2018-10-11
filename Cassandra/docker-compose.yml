@@ -1,43 +1,75 @@
-node01:
-    image: cassandra:3.11.1
-    container_name: cass_node1
-    ports:
-        - "7000:7000"
-        - "7001:7001"
-        - "9042:9042"
-        - "9160:9160"
-        - "7199:7199"
-    volumes:
-        - ./data1:/var/lib/cassandra
-   
-node02:
-    image: cassandra:3.11.1
-    container_name: cass_node2
-    ports:
-        - "17000:7000"
-        - "17001:7001"
-        - "19042:9042"
-        - "19160:9160"
-        - "17199:7199"
-    volumes:
-        - ./data2:/var/lib/cassandra
-    environment:
-        - CASSANDRA_SEEDS=node01
-    links:
-        - node01:node01
+version: "2.1"
 
-node03:
-    image: cassandra:3.11.1
-    container_name: cass_node3
-    ports:
-        - "27000:7000"
-        - "27001:7001"
-        - "29042:9042"
-        - "29160:9160"
-        - "27199:7199"
-    volumes:
-        - ./data3:/var/lib/cassandra
-    environment:
-        - CASSANDRA_SEEDS=node01
-    links:
-        - node01:node01
+services:
+    node01:
+        image: cassandra:3.11.1
+        container_name: cass_node1
+        ports:
+            - "7000:7000"
+            - "7001:7001"
+            - "9042:9042"
+            - "9160:9160"
+            - "7199:7199"
+        volumes:
+            - /CloudAssignment/Cass1:/shared-data
+        environment:
+            - CASSANDRA_SEEDS=node01,node2,node3
+            - CASSANDRA_START_RPC=true
+        restart: on-failure
+        healthcheck:
+            test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
+            interval: 60s
+            timeout: 10s
+            retries: 5        
+       
+    node02:
+        image: cassandra:3.11.1
+        container_name: cass_node2
+        ports:
+            - "17000:7000"
+            - "17001:7001"
+            - "19042:9042"
+            - "19160:9160"
+            - "17199:7199"
+        volumes:
+            - /CloudAssignment/Cass2:/shared-data
+        environment:
+            - CASSANDRA_SEEDS=node01
+            - CASSANDRA_START_RPC=true
+        restart: on-failure
+        links:
+            - node01:node01
+        depends_on:
+            node01: 
+                condition: service_healthy
+        healthcheck:
+            test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+            
+    node03:
+        image: cassandra:3.11.1
+        container_name: cass_node3
+        ports:
+            - "27000:7000"
+            - "27001:7001"
+            - "29042:9042"
+            - "29160:9160"
+            - "27199:7199"
+        volumes:
+            - /CloudAssignment/Cass3:/shared-data
+        environment:
+            - CASSANDRA_SEEDS=node01
+            - CASSANDRA_START_RPC=true
+        restart: on-failure
+        links:
+            - node01:node01
+        depends_on:
+            node01: 
+                condition: service_healthy
+        healthcheck:
+            test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
+            interval: 30s
+            timeout: 10s
+            retries: 5

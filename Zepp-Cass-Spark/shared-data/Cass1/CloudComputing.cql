@@ -1,10 +1,10 @@
-CREATE KEYSPACE cloud
+CREATE KEYSPACE cloudcomputing
 WITH REPLICATION = {
 'class' : 'NetworkTopologyStrategy',
 'datacenter1' : 2
 } ;
 
-use cloud ;
+use cloudcomputing ;
 
 CREATE TABLE data (
 campus text,
@@ -45,3 +45,4 @@ insert into date(campus,date,sensor_id,temperature) values ('St Lucia', '2018-06
 insert into date(campus,date,sensor_id,temperature) values ('Gatton', '2018-06-02', 4, 22) ;
 
 insert into date(campus,date,sensor_id,temperature) values ('St Lucia', '2018-06-01', 1, 26.1) ;
+

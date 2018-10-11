@@ -35,7 +35,7 @@ services:
         volumes:
             - /CloudAssignment/Cass1:/shared-data
         environment:
-            - CASSANDRA_SEEDS=node01,node02,node03
+            - CASSANDRA_SEEDS=node01,node02
             - CASSANDRA_START_RPC=true
         restart: always
         healthcheck:
@@ -56,33 +56,7 @@ services:
         volumes:
             - /CloudAssignment/Cass2:/shared-data
         environment:
-            - CASSANDRA_SEEDS=node01,node02,node03
-            - CASSANDRA_START_RPC=true
-        restart: always
-        links:
-            - node01:node01
-        depends_on:
-            node01: 
-                condition: service_healthy
-        healthcheck:
-            test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
-            interval: 30s
-            timeout: 10s
-            retries: 5
-            
-    node03:
-        image: cassandra:3.11.1
-        container_name: cass_node3
-        ports:
-            - "27000:7000"
-            - "27001:7001"
-            - "29042:9042"
-            - "29160:9160"
-            - "27199:7199"
-        volumes:
-            - /CloudAssignment/Cass3:/shared-data
-        environment:
-            - CASSANDRA_SEEDS=node01,node02,node03
+            - CASSANDRA_SEEDS=node01,node02
             - CASSANDRA_START_RPC=true
         restart: always
         links:
@@ -118,7 +92,6 @@ services:
             retries: 3
             
     spark-master-backup:
-
         build: ./spark
         container_name: spark-master-backup
         restart: always
@@ -139,39 +112,19 @@ services:
             timeout: 10s
             retries: 3
             
-    spark-worker-1:
+    spark-worker:
         build: ./spark
-        container_name: spark-worker-1
+        container_name: spark-worker
         environment:
             - SPARK_TYPE=slave
             - SPARK_MASTERS=spark://spark-master-backup:7077,spark-master:7077
-            - SPARK_WORKER_CORES=32
-            - SPARK_WORKER_MEMORY=2g
+            - SPARK_WORKER_CORES=64
+            - SPARK_WORKER_MEMORY=4g
         links:
             - spark-master
             - spark-master-backup
         ports:
             - 8082:8082
-        depends_on:
-            spark-master: 
-                condition: service_healthy
-     
-    spark-worker-2:
-        build: ./spark
-        container_name: spark-worker-2
-        environment:
-            - SPARK_TYPE=slave
-            - SPARK_MASTERS=spark-master
-            - SPARK_WORKER_CORES=32
-            - SPARK_WORKER_MEMORY=2g
-        links:
-            - spark-master
-            - spark-master-backup
-        ports:
-            - 8083:8083
-        depends_on:
-            spark-master: 
-                condition: service_healthy
                 
     zeppelin:
       build: ./zeppelin
