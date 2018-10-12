@@ -5,5 +5,5 @@
 
 ## Installationa and Usage
 
-* The main folder is Zepp-Cass-Spark, the other folders are the test for each components of the project
-* Read the README.md in Zepp-Cass-Spark folder to get more details about the project
+* The main folder is MainProject, the other folders are the test for each components of the project
+* Read the README.md in MainProject folder to get more details about the project
