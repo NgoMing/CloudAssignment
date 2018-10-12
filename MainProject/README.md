@@ -147,7 +147,7 @@ CREATE MATERIALIZED VIEW course_rate AS
 ##### Step 1: Clone git repository
 ```
 git clone https://github.com/NgoMing/CloudAssignment.git
-cd Zepp-Cass-Spark
+cd MainProject
 ```
 
 ##### Step 2: Run containers under background
@@ -170,8 +170,8 @@ docker-machine ip cloud-dev
 * Access address: http://docker-machine-ip:8080 to get URL of spart-master container
 * Access Zeppelin via address: http://docker-machine-ip:8090
 * Click on anonymous at the top right, then Interpreter
-* Go to Cassandra and edit the `cassandra.hosts` field to `cassandra`
-* Go to Spark part and edit the `master` field to the value of the above spark-master URL such as `spark://e7583f98220e:7077`
+* Go to Cassandra and edit the `cassandra.hosts` field to `cassandra` and then *Save*
+* Go to Spark part and edit the `master` field to the value of the above spark-master URL such as `spark://e7583f98220e:7077` and then *Save*
 
 ##### Step 4: Import database into Cassandra node
 * Enter Cassandra node1 in bash mode:
@@ -180,6 +180,8 @@ docker exec -it  cass_node1 bash
 ```
 * Import key space and tables via cql file
 ```
+cqlsh -f '/shared-data/cass_mini_db.cql
+or
 cqlsh -f '/shared-data/cass_db.cql
 ```
 * Test data in tables
@@ -206,6 +208,8 @@ docker exec -it cass_node1 bash
 ```
 * Create key space and table
 ```
+cqlsh -f '/shared-data/cass_mini_db.cql'
+or 
 cqlsh -f '/shared-data/cass_db.cql'
 ```
 * Check data of new table
@@ -273,3 +277,12 @@ docker stop spark-master
 
 ##### Connection reset by peer in Cassandra node
 * Solution: disable firewall of window
+
+### License
+
+##### Dockerfile
+* Cassandra: cassandra:3.11.1 - Dockerhub
+* Spark: https://github.com/zhao-xin/spark_cassandra_examples
+* Zeppelin: https://github.com/dylanmei/docker-zeppelin.git
+* Zookeeper: zookeeper:lastest - Dockerhub
+* PhpCass: https://github.com/mhndev/docker-php-cassandra-driver.git

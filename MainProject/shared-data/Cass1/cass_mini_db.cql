@@ -40,22 +40,22 @@ CREATE TABLE course (
 	cost decimal,
 	description text,
 	average_rate decimal,
-	PRIMARY KEY (course_name)
+	PRIMARY KEY (course_name,teacher_name)
 );
 
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Java Programming','Kristin Shen',115.89,573,'This is a course of basic Java language',4.5);
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Perl Programming','Bailey Cox',85.89,432,'This is a course of basic Perl language',4.2);
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('JavaScript Programming','Natasha Hernandez',117.89,623,'This is a course of basic JavaScript language',4.3);
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Python Programming','Pamela Rana',79.89,256,'This is a course of basic Python language',4.8);
-insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('C Programming','Sydney Lewis',126.89,412,'This is a course of basic C language',3.9);
+insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('C Programming','Kristin Shen',126.89,412,'This is a course of basic C language',3.9);
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Big Data Analysis','Jackson Adams',173.89,786,'This is a course of analysing Big Data',4.3);
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Machine Learning','Megan Murphy',168.89,894,'This is a course of basic Machine Learning',4.1);
-insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Cloud Implementation','Ian Perez',154.89,754,'This is a course of how to implement an application based on Cloud technology',4.9);
+insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Cloud Implementation','Kristin Shen',154.89,754,'This is a course of how to implement an application based on Cloud technology',4.9);
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Web Development','Edward Taylor',127.89,675,'This is a course of how to build Web Development',4.6);
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Data Structures and Algorithms','Thomas Perez',159.89,542,'This is a course of advanced Data Structures and Algorithms',4.4);
 
 CREATE MATERIALIZED VIEW course_rate AS
-  SELECT course_name, average_rate FROM course
-  WHERE course_name IS NOT NULL AND average_rate IS NOT NULL
-  PRIMARY KEY (course_name,average_rate)
+  SELECT course_name, teacher_name, average_rate FROM course
+  WHERE course_name IS NOT NULL AND average_rate IS NOT NULL AND teacher_name IS NOT NULL
+  PRIMARY KEY (course_name,teacher_name,average_rate)
   WITH CLUSTERING ORDER BY (average_rate DESC);
