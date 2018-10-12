@@ -181,6 +181,12 @@ insert into sales_join_price(student_name,course_name,date,rate,price) values ('
 insert into sales_join_price(student_name,course_name,date,rate,price) values ('Carol Rai','Java Programming','2018-09-29',3,115.89);
 insert into sales_join_price(student_name,course_name,date,rate,price) values ('Carol Rai','Cloud Implementation','2018-11-01',3,154.89);
 
+CREATE MATERIALIZED VIEW student_price AS
+  SELECT student_name, course_name, price FROM sales_join_price
+  WHERE student_name IS NOT NULL AND course_name IS NOT NULL AND price IS NOT NULL
+  PRIMARY KEY (student_name,course_name,price)
+  WITH CLUSTERING ORDER BY (price DESC);
+
 CREATE TABLE course (
 	course_name text,
 	teacher_name text,
@@ -188,7 +194,7 @@ CREATE TABLE course (
 	cost decimal,
 	description text,
 	average_rate decimal,
-	PRIMARY KEY (course_name,teacher_name)
+	PRIMARY KEY (course_name)
 );
 
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Java Programming','Kristin Shen',115.89,573,'This is a course of basic Java language',4.5);
@@ -201,9 +207,3 @@ insert into course(course_name,teacher_name,price,cost,description,average_rate)
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Cloud Implementation','Kristin Shen',154.89,754,'This is a course of how to implement an application based on Cloud technology',4.9);
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Web Development','Edward Taylor',127.89,675,'This is a course of how to build Web Development',4.6);
 insert into course(course_name,teacher_name,price,cost,description,average_rate) values ('Data Structures and Algorithms','Thomas Perez',159.89,542,'This is a course of advanced Data Structures and Algorithms',4.4);
-
-CREATE MATERIALIZED VIEW course_rate AS
-  SELECT course_name, teacher_name, average_rate FROM course
-  WHERE course_name IS NOT NULL AND average_rate IS NOT NULL AND teacher_name IS NOT NULL
-  PRIMARY KEY (course_name,teacher_name,average_rate)
-  WITH CLUSTERING ORDER BY (average_rate DESC);

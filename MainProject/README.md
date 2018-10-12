@@ -136,11 +136,11 @@ CREATE TABLE sales_join_price (
 ```
 
 ##### Create Materialized view
-CREATE MATERIALIZED VIEW course_rate AS
-  SELECT course_name, average_rate FROM course
-  WHERE course_name IS NOT NULL AND average_rate IS NOT NULL
-  PRIMARY KEY (course_name,average_rate)
-  WITH CLUSTERING ORDER BY (average_rate DESC);
+CREATE MATERIALIZED VIEW student_price AS
+  SELECT student_name, course_name, price FROM sales_join_price
+  WHERE student_name IS NOT NULL AND course_name IS NOT NULL AND price IS NOT NULL
+  PRIMARY KEY (student_name,course_name,price)
+  WITH CLUSTERING ORDER BY (price DESC);
 
 ### Build
 
@@ -168,10 +168,11 @@ docker-compose -f docker-compose-mini.yml up -d
 docker-machine ip cloud-dev
 ```
 * Access address: http://docker-machine-ip:8080 to get URL of spart-master container
+* Access address: http://docker-machine-ip:8081 to get URL of spart-master-backup container
 * Access Zeppelin via address: http://docker-machine-ip:8090
 * Click on anonymous at the top right, then Interpreter
 * Go to Cassandra and edit the `cassandra.hosts` field to `cassandra` and then *Save*
-* Go to Spark part and edit the `master` field to the value of the above spark-master URL such as `spark://e7583f98220e:7077` and then *Save*
+* Go to Spark part and edit the `master` field to the value of the above spark masters URL such as `spark://e7583f98220e:7077,a40c6db92a36:7077` and then *Save*
 
 ##### Step 4: Import database into Cassandra node
 * Enter Cassandra node1 in bash mode:
